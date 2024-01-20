@@ -1,4 +1,4 @@
-import { useState, createContext } from "react";
+import { useState, createContext, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 // import { tasks as tasksData } from "../data/tasks";
 import PropTypes from "prop-types";
@@ -6,10 +6,13 @@ import PropTypes from "prop-types";
 const TaskContext = createContext();
 
 function TaskContextProvider(props) {
-  const [tasks, setTasks] = useState(() => {
+  const [tasks, setTasks] = useState([]);
+
+  useEffect(() => {
     const tasksFromStorage = window.localStorage.getItem("tasks");
-    return tasksFromStorage ? JSON.parse(tasksFromStorage) : [];
-  });
+
+    setTasks(tasksFromStorage ? JSON.parse(tasksFromStorage) : []);
+  }, []);
 
   const createTask = (task) => {
     const newTasks = [
